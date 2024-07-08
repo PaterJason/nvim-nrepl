@@ -1,3 +1,4 @@
+local config = require("nrepl.config")
 local prompt = require("nrepl.prompt")
 local state = require("nrepl.state")
 local tcp = require("nrepl.tcp")
@@ -10,11 +11,11 @@ local M = {}
 ---@param host? string
 ---@param port? string
 function M.connect(host, port)
-  host = host or "localhost"
+  host = host or config.connection.host
   if port == nil then
-    local port_file = ".nrepl-port"
-    if not vim.uv.fs_stat(port_file) then
-      util.notify("No .nrepl-port file, not connecting")
+    local port_file = vim.iter(config.connection.port_files):find(vim.uv.fs_stat)
+    if not port_file then
+      util.notify("No port file found, not connecting")
       return
     end
     for line in io.lines(port_file) do
@@ -25,6 +26,10 @@ function M.connect(host, port)
     end
   end
   local portnum = tonumber(port)
+  if not portnum or portnum < 0 then
+    util.notify("Failed to read port file", vim.log.levels.WARN)
+    return
+  end
 
   local client = state.data.client
   if client then

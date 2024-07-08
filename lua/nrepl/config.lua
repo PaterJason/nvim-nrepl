@@ -13,6 +13,12 @@ local M = {
     focus_id = "nvim.nrepl",
     wrap = false,
   },
+  connection = {
+    ---@type string
+    host = "localhost",
+    ---@type string[]
+    port_files = { ".nrepl-port", ".shadow-cljs/nrepl.port" },
+  },
   middleware_params = {
     ---@type Nrepl.RequestParam.String
     -- ["nrepl.middleware.print/print"] = "nrepl.util.print/pr",

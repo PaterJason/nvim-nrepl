@@ -272,6 +272,8 @@ local function read_callback(response)
   end
 end
 
+---@param host string
+---@param port integer
 ---@return uv.uv_tcp_t?
 function M.connect(host, port)
   ---@diagnostic disable-next-line
