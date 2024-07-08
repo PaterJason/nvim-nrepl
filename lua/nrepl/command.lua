@@ -78,7 +78,6 @@ vim.api.nvim_create_user_command("Nrepl", function(info)
 end, {
   nargs = "+",
   complete = function(arg_lead, cmd_line, cursor_pos)
-    local util = require("nrepl.util")
     local server = require("nrepl.state").data.server
     local _, arg_n = string.gsub(string.sub(cmd_line, 1, cursor_pos), " ", "")
     if arg_n == 1 then

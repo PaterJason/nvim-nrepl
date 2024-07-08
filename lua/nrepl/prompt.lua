@@ -133,13 +133,14 @@ function M.append(s, opts)
     end
   end
 
-  local float_winnr = M.open_float()
-  if float_winnr then
-    vim.api.nvim_win_call(float_winnr, function()
-      vim.api.nvim_win_set_cursor(0, { pre_line_count, 0 })
-      vim.cmd("normal! zt")
-    end)
-  end
+  -- -- Open floating window
+  -- local float_winnr = M.open_float()
+  -- if float_winnr then
+  --   vim.api.nvim_win_call(float_winnr, function()
+  --     vim.api.nvim_win_set_cursor(0, { pre_line_count, 0 })
+  --     vim.cmd("normal! zt")
+  --   end)
+  -- end
 end
 
 return M

@@ -205,15 +205,25 @@ local function set_virt_text(s, hl_name, request)
 
   if vim.tbl_isempty(extmark) then
     vim.api.nvim_buf_clear_namespace(0, ns_id, request.line - 1, request.line)
-    vim.api.nvim_buf_set_extmark(0, ns_id, request.line - 1, request.column - 1, {
+    local lines = vim.split(s, "\n", { plain = true, trimempty = true })
+    local hl_id = vim.api.nvim_get_hl_id_by_name(hl_name)
+    ---@type vim.api.keyset.set_extmark
+    local extmark_opts = {
       id = request_id,
-      virt_text = {
-        { "=> " .. string.gsub(s, "%s+", " "), vim.api.nvim_get_hl_id_by_name(hl_name) },
-      },
       priority = 175,
       invalidate = true,
       undo_restore = false,
-    })
+    }
+    if #lines == 1 then
+      extmark_opts.virt_text = { { "=> " .. lines[1], hl_id } }
+    else
+      local virt_lines = {}
+      local iter = vim.iter(lines)
+      table.insert(virt_lines, { { " => " .. iter:next(), hl_id } })
+      iter:each(function(line) table.insert(virt_lines, { { "    " .. line, hl_id } }) end)
+      extmark_opts.virt_lines = virt_lines
+    end
+    vim.api.nvim_buf_set_extmark(0, ns_id, request.line - 1, request.column - 1, extmark_opts)
     vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
       callback = function() vim.api.nvim_buf_del_extmark(0, ns_id, request_id) end,
       buffer = 0,
@@ -255,10 +265,10 @@ function M.callback.eval(response, request)
     prompt.append(response.out, { prefix = "out" })
   elseif response.err then
     prompt.append(response.err, { prefix = "err" })
-  -- set_virt_text(response.err, "DiagnosticVirtualTextError", request)
+    set_virt_text(response.err, "DiagnosticVirtualTextError", request)
   elseif response.value then
     prompt.append(response.value, {})
-    -- set_virt_text(response.value, "DiagnosticVirtualTextOk", request)
+    set_virt_text(response.value, "DiagnosticVirtualTextOk", request)
   end
 end
 
