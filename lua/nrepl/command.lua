@@ -33,7 +33,6 @@ vim.api.nvim_create_user_command("NreplOp", function(info)
 end, {
   nargs = "+",
   complete = function(arg_lead, cmd_line, cursor_pos)
-    local util = require("nrepl.util")
     local ops = require("nrepl.state").data.server.ops
     return vim
       .iter(ops)

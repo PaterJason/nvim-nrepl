@@ -217,9 +217,8 @@ local function set_virt_text(s, hl_name, request)
     if #lines == 1 then
       extmark_opts.virt_text = { { "=> " .. lines[1], hl_id } }
     else
-      local virt_lines = {}
       local iter = vim.iter(lines)
-      table.insert(virt_lines, { { " => " .. iter:next(), hl_id } })
+      local virt_lines = { { { " => " .. iter:next(), hl_id } } }
       iter:each(function(line) table.insert(virt_lines, { { "    " .. line, hl_id } }) end)
       extmark_opts.virt_lines = virt_lines
     end
@@ -265,10 +264,10 @@ function M.callback.eval(response, request)
     prompt.append(response.out, { prefix = "out" })
   elseif response.err then
     prompt.append(response.err, { prefix = "err" })
-    set_virt_text(response.err, "DiagnosticVirtualTextError", request)
+    -- set_virt_text(response.err, "DiagnosticVirtualTextError", request)
   elseif response.value then
     prompt.append(response.value, {})
-    set_virt_text(response.value, "DiagnosticVirtualTextOk", request)
+    -- set_virt_text(response.value, "DiagnosticVirtualTextOk", request)
   end
 end
 

@@ -14,5 +14,10 @@
       "${3rd}/luv/library"
     ],
     "checkThirdParty": false
+  },
+  "diagnostics": {
+    "unusedLocalExclude": [
+      "_*"
+    ]
   }
 }

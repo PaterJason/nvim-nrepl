@@ -1,5 +1,3 @@
-local prompt = require("nrepl.prompt")
-local state = require("nrepl.state")
 local tcp = require("nrepl.tcp")
 
 local message = tcp.message

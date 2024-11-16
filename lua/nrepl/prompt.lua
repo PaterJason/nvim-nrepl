@@ -127,20 +127,20 @@ function M.append(s, opts)
   for _, winnr in ipairs(vim.fn.win_findbuf(buf)) do
     if
       vim.api.nvim_win_get_config(winnr).relative == ""
-      and vim.api.nvim_win_get_cursor(winnr)[1] == pre_line_count
+      -- and vim.api.nvim_win_get_cursor(winnr)[1] == pre_line_count
     then
       vim.api.nvim_win_set_cursor(winnr, { line_count, 0 })
     end
   end
 
-  -- -- Open floating window
-  -- local float_winnr = M.open_float()
-  -- if float_winnr then
-  --   vim.api.nvim_win_call(float_winnr, function()
-  --     vim.api.nvim_win_set_cursor(0, { pre_line_count, 0 })
-  --     vim.cmd("normal! zt")
-  --   end)
-  -- end
+  -- Open floating window
+  local float_winnr = M.open_float()
+  if float_winnr then
+    vim.api.nvim_win_call(float_winnr, function()
+      vim.api.nvim_win_set_cursor(0, { pre_line_count, 0 })
+      vim.cmd("normal! zt")
+    end)
+  end
 end
 
 return M

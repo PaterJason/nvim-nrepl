@@ -61,7 +61,7 @@ function M.completefunc(findstart, base)
   end
 end
 
-function M.command_customlist(arg_lead, cmd_line, cursor_pos)
+function M.command_customlist(arg_lead, _cmd_line, _cursor_pos)
   local completions = M.get_sync(arg_lead)
   local candidates = vim
     .iter(completions)
